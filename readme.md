@@ -106,5 +106,6 @@ func (h *authHandler) Register(c *fiber.Ctx) error {
 <p>To test your register endpoint, you'll have to visit <code>localhost:xx/register?provider={yourProvider}</code></p>
 
 <h3>Available providers</h3>
+
 - [x] Google
 - [x] Github
