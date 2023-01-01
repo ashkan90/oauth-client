@@ -4,8 +4,6 @@ import (
 	"context"
 	"oauth-client/pkg/oauth"
 	"oauth-client/pkg/oauthclient/model"
-
-	"go.uber.org/zap"
 )
 
 type Proxy interface {
@@ -13,13 +11,11 @@ type Proxy interface {
 }
 
 type proxy struct {
-	logger   *zap.Logger
 	strategy Strategy
 }
 
-func NewStrategyProxy(l *zap.Logger, s Strategy) Proxy {
+func NewStrategyProxy(s Strategy) Proxy {
 	return &proxy{
-		logger:   l,
 		strategy: s,
 	}
 }

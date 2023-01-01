@@ -8,14 +8,12 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"go.uber.org/zap"
 )
 
 var _ = Describe("SSO Unit Tests", func() {
 	Describe("init sso with given correct provider", func() {
 		It("should return new github sso", func() {
 			_sso := sso.InitSSO(sso.NewStrategyProxy(
-				zap.L(),
 				strategies.NewGithubSSO(githubProcessor),
 			))
 
@@ -24,7 +22,6 @@ var _ = Describe("SSO Unit Tests", func() {
 
 		It("should return new google sso", func() {
 			_sso := sso.InitSSO(sso.NewStrategyProxy(
-				zap.L(),
 				strategies.NewGoogleSSO(googleProcessor),
 			))
 
@@ -36,7 +33,6 @@ var _ = Describe("SSO Unit Tests", func() {
 		var _sso sso.StrategySelector
 		BeforeEach(func() {
 			_sso = sso.InitSSO(sso.NewStrategyProxy(
-				zap.L(),
 				strategies.NewGithubSSO(githubProcessor),
 			))
 		})
@@ -47,7 +43,7 @@ var _ = Describe("SSO Unit Tests", func() {
 		})
 
 		It("should set current sso provider by given provider", func() {
-			googleProvider := sso.NewStrategyProxy(zap.L(), strategies.NewGoogleSSO(googleProcessor))
+			googleProvider := sso.NewStrategyProxy(strategies.NewGoogleSSO(googleProcessor))
 			_sso.Set(googleProvider)
 
 			Expect(_sso.Algo()).To(Not(BeNil()))
@@ -60,7 +56,6 @@ var _ = Describe("SSO Unit Tests", func() {
 
 		BeforeEach(func() {
 			_sso = sso.InitSSO(sso.NewStrategyProxy(
-				zap.L(),
 				strategies.NewGithubSSO(githubProcessor),
 			))
 		})
@@ -76,7 +71,7 @@ var _ = Describe("SSO Unit Tests", func() {
 		It("should prepare login url as intended for google provider", func() {
 			googleProcessor.EXPECT().BuildLoginURL().Return(googleInvalidLoginURL, nil).Times(1)
 
-			googleProvider := sso.NewStrategyProxy(zap.L(), strategies.NewGoogleSSO(googleProcessor))
+			googleProvider := sso.NewStrategyProxy(strategies.NewGoogleSSO(googleProcessor))
 			_sso.Set(googleProvider)
 
 			var url, err = _sso.Algo().Login()
@@ -106,7 +101,7 @@ var _ = Describe("SSO Unit Tests", func() {
 				VerifiedEmail: true,
 			}
 
-			googleProvider := sso.NewStrategyProxy(zap.L(), strategies.NewGoogleSSO(googleProcessor))
+			googleProvider := sso.NewStrategyProxy(strategies.NewGoogleSSO(googleProcessor))
 			_sso.Set(googleProvider)
 
 			successByProvider(googleProcessor, expected)
